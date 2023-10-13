@@ -37,11 +37,13 @@ class ProductAttributeInline(admin.TabularInline):
     extra = 2
 
 
+@admin.register(ProductClass)
 class ProductClassAdmin(admin.ModelAdmin):
     list_display = ('name', 'requires_shipping', 'track_stock')
     inlines = [ProductAttributeInline]
 
 
+@admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     date_hierarchy = 'date_created'
     list_display = ('get_title', 'upc', 'get_product_class', 'structure',
@@ -62,15 +64,18 @@ class ProductAdmin(admin.ModelAdmin):
                 'attribute_values__attribute'))
 
 
+@admin.register(ProductAttribute)
 class ProductAttributeAdmin(admin.ModelAdmin):
     list_display = ('name', 'code', 'product_class', 'type')
     prepopulated_fields = {"code": ("name", )}
 
 
+@admin.register(Option)
 class OptionAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(ProductAttributeValue)
 class ProductAttributeValueAdmin(admin.ModelAdmin):
     list_display = ('product', 'attribute', 'value')
 
@@ -79,22 +84,17 @@ class AttributeOptionInline(admin.TabularInline):
     model = AttributeOption
 
 
+@admin.register(AttributeOptionGroup)
 class AttributeOptionGroupAdmin(admin.ModelAdmin):
     list_display = ('name', 'option_summary')
     inlines = [AttributeOptionInline, ]
 
 
+@admin.register(Category)
 class CategoryAdmin(TreeAdmin):
     form = movenodeform_factory(Category)
     list_display = ('name', 'slug')
 
 
-admin.site.register(ProductClass, ProductClassAdmin)
-admin.site.register(Product, ProductAdmin)
-admin.site.register(ProductAttribute, ProductAttributeAdmin)
-admin.site.register(ProductAttributeValue, ProductAttributeValueAdmin)
-admin.site.register(AttributeOptionGroup, AttributeOptionGroupAdmin)
-admin.site.register(Option, OptionAdmin)
 admin.site.register(ProductImage)
-admin.site.register(Category, CategoryAdmin)
 admin.site.register(ProductCategory)

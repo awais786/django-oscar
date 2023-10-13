@@ -11,6 +11,7 @@ class LineInline(admin.TabularInline):
                        'price_incl_tax', 'price_currency', 'stockrecord')
 
 
+@admin.register(Line)
 class LineAdmin(admin.ModelAdmin):
     list_display = ('id', 'basket', 'product', 'stockrecord', 'quantity',
                     'price_excl_tax', 'price_currency', 'date_created')
@@ -28,5 +29,4 @@ class BasketAdmin(admin.ModelAdmin):
 
 
 admin.site.register(get_model('basket', 'basket'), BasketAdmin)
-admin.site.register(Line, LineAdmin)
 admin.site.register(get_model('basket', 'LineAttribute'))

@@ -1,5 +1,5 @@
 from django.apps import apps
-from django.conf.urls import include, url
+from django.urls import include, path, re_path
 from django.utils.translation import gettext_lazy as _
 
 from oscar.core.application import OscarConfig
@@ -26,12 +26,12 @@ class CatalogueOnlyConfig(OscarConfig):
     def get_urls(self):
         urls = super().get_urls()
         urls += [
-            url(r'^$', self.catalogue_view.as_view(), name='index'),
-            url(r'^(?P<product_slug>[\w-]*)_(?P<pk>\d+)/$',
+            path('', self.catalogue_view.as_view(), name='index'),
+            re_path(r'^(?P<product_slug>[\w-]*)_(?P<pk>\d+)/$',
                 self.detail_view.as_view(), name='detail'),
-            url(r'^category/(?P<category_slug>[\w-]+(/[\w-]+)*)_(?P<pk>\d+)/$',
+            re_path(r'^category/(?P<category_slug>[\w-]+(/[\w-]+)*)_(?P<pk>\d+)/$',
                 self.category_view.as_view(), name='category'),
-            url(r'^ranges/(?P<slug>[\w-]+)/$',
+            re_path(r'^ranges/(?P<slug>[\w-]+)/$',
                 self.range_view.as_view(), name='range'),
         ]
         return self.post_process_urls(urls)
@@ -52,7 +52,7 @@ class CatalogueReviewsOnlyConfig(OscarConfig):
     def get_urls(self):
         urls = super().get_urls()
         urls += [
-            url(r'^(?P<product_slug>[\w-]*)_(?P<product_pk>\d+)/reviews/',
+            re_path(r'^(?P<product_slug>[\w-]*)_(?P<product_pk>\d+)/reviews/',
                 include(self.reviews_app.urls[0])),
         ]
         return self.post_process_urls(urls)

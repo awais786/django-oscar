@@ -19,6 +19,4 @@ def annotate_form_field(parser, token):
     if len(args) < 2:
         raise template.TemplateSyntaxError(
             "annotate_form_field tag requires a form field to be passed")
-    if django.VERSION < (3, 1):
-        return FormFieldNode(args[1])
     return TextNode('')
