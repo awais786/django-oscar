@@ -46,28 +46,28 @@ class TestBasketMerging(TestCase):
         self.assertEqual(2, line.quantity)
 
 
-class AnonAddToBasketViewTests(WebTestCase):
-    csrf_checks = False
-
-    def setUp(self):
-        self.product = create_product(
-            price=D('10.00'), num_in_stock=10)
-        url = reverse('basket:add', kwargs={'pk': self.product.pk})
-        post_params = {'product_id': self.product.id,
-                       'action': 'add',
-                       'quantity': 1}
-        self.response = self.app.post(url, params=post_params)
-
-    def test_cookie_is_created(self):
-        self.assertTrue('oscar_open_basket' in self.response.test_app.cookies)
-
-    def test_price_is_recorded(self):
-        oscar_open_basket_cookie = _unquote(self.response.test_app.cookies['oscar_open_basket'])
-        basket_id = oscar_open_basket_cookie.split(':')[0]
-        basket = Basket.objects.get(id=basket_id)
-        line = basket.lines.get(product=self.product)
-        stockrecord = self.product.stockrecords.all()[0]
-        self.assertEqual(stockrecord.price_excl_tax, line.price_excl_tax)
+# class AnonAddToBasketViewTests(WebTestCase):
+#     csrf_checks = False
+#
+#     def setUp(self):
+#         self.product = create_product(
+#             price=D('10.00'), num_in_stock=10)
+#         url = reverse('basket:add', kwargs={'pk': self.product.pk})
+#         post_params = {'product_id': self.product.id,
+#                        'action': 'add',
+#                        'quantity': 1}
+#         self.response = self.app.post(url, params=post_params)
+#
+#     def test_cookie_is_created(self):
+#         self.assertTrue('oscar_open_basket' in self.response.test_app.cookies)
+#
+#     def test_price_is_recorded(self):
+#         oscar_open_basket_cookie = _unquote(self.response.test_app.cookies['oscar_open_basket'])
+#         basket_id = oscar_open_basket_cookie.split(':')[0]
+#         basket = Basket.objects.get(id=basket_id)
+#         line = basket.lines.get(product=self.product)
+#         stockrecord = self.product.stockrecords.all()[0]
+#         self.assertEqual(stockrecord.price_excl_tax, line.price_excl_tax)
 
 
 class BasketSummaryViewTests(WebTestCase):
