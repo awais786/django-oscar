@@ -43,7 +43,7 @@ install_requires = [
     'django-widget-tweaks>=1.4.1',
 ]
 
-sorl_thumbnail_version = 'sorl-thumbnail>=12.6,<12.7'
+sorl_thumbnail_version = 'sorl-thumbnail>=12.6,<13.0'
 easy_thumbnails_version = 'easy-thumbnails>=2.7,<2.8'
 
 docs_requires = [
