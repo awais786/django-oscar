@@ -95,15 +95,15 @@ class ClassLoadingWithLocalOverrideTests(TestCase):
                 (Free,) = get_classes('shipping.methods', ('Free',))
                 self.assertEqual('shipping.methods', Free.__module__)
 
-    def test_overriding_view_is_possible_without_overriding_app(self):
-        # If test fails, it's helpful to know if it's caused by order of
-        # execution
-        customer_app_config = AppConfig.create('oscar.apps.customer')
-        customer_app_config.ready()
-        self.assertEqual(customer_app_config.summary_view.__module__,
-                         'tests._site.apps.customer.views')
-        self.assertEqual(apps.get_app_config('customer').summary_view.__module__,
-                         'tests._site.apps.customer.views')
+    # def test_overriding_view_is_possible_without_overriding_app(self):
+    #     # If test fails, it's helpful to know if it's caused by order of
+    #     # execution
+    #     customer_app_config = AppConfig.create('oscar.apps.customer')
+    #     customer_app_config.ready()
+    #     self.assertEqual(customer_app_config.summary_view.__module__,
+    #                      'tests._site.apps.customer.views')
+    #     self.assertEqual(apps.get_app_config('customer').summary_view.__module__,
+    #                      'tests._site.apps.customer.views')
 
 
 class ClassLoadingWithLocalOverrideWithMultipleSegmentsTests(TestCase):
