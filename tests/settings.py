@@ -10,11 +10,11 @@ ALLOWED_HOSTS = ['test', '.oscarcommerce.com']
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DATABASE_ENGINE',
-                                 'django.db.backends.postgresql'),
+        'ENGINE': os.environ.get('DATABASE_ENGINE', 'django.db.backends.postgresql'),
         'NAME': os.environ.get('DATABASE_NAME', 'oscar'),
         'USER': os.environ.get('DATABASE_USER', None),
         'PASSWORD': os.environ.get('DATABASE_USER', None),
+        "PORT": os.environ.get("DATABASE_PORT", 5432),
     }
 }
 
