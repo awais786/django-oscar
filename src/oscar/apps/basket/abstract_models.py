@@ -124,7 +124,7 @@ class AbstractBasket(models.Model):
         lost.
         """
         if self.id is None:
-            return self.lines.none()
+            return self.lines.model.objects.none()
         if self._lines is None:
             self._lines = (
                 self.lines
@@ -493,14 +493,16 @@ class AbstractBasket(models.Model):
     @property
     def num_items(self):
         """Return number of items"""
-        return sum(line.quantity for line in self.lines.all())
+        return sum(line.quantity for line in self.all_lines())
 
     @property
     def num_items_without_discount(self):
-        num = 0
-        for line in self.all_lines():
-            num += line.quantity_without_discount
-        return num
+        if self.id:
+            matching_lines = self.lines.filter(product=product)
+            quantity = matching_lines.aggregate(Sum('quantity'))['quantity__sum']
+            return quantity or 0
+
+        return 0
 
     @property
     def num_items_with_discount(self):
