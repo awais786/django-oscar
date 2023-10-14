@@ -26,6 +26,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
+          POSTGRES_HOST: localhost
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
