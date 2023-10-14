@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path, re_path
 from django.contrib.auth.decorators import login_required
 from django.views import generic
 
@@ -32,36 +32,36 @@ class CommunicationApplication(Application):
             # Alerts
             # Alerts can be setup by anonymous users: some views do not
             # require login
-            url(r'^alerts/$',
+            path('alerts/',
                 login_required(self.alert_list_view.as_view()),
                 name='alerts-list'),
-            url(r'^alerts/create/(?P<pk>\d+)/$',
+            path('alerts/create/<int:pk>/',
                 self.alert_create_view.as_view(),
                 name='alert-create'),
-            url(r'^alerts/confirm/(?P<key>[a-z0-9]+)/$',
+            re_path(r'^alerts/confirm/(?P<key>[a-z0-9]+)/$',
                 self.alert_confirm_view.as_view(),
                 name='alerts-confirm'),
-            url(r'^alerts/cancel/key/(?P<key>[a-z0-9]+)/$',
+            re_path(r'^alerts/cancel/key/(?P<key>[a-z0-9]+)/$',
                 self.alert_cancel_view.as_view(),
                 name='alerts-cancel-by-key'),
-            url(r'^alerts/cancel/(?P<pk>[a-z0-9]+)/$',
+            re_path(r'^alerts/cancel/(?P<pk>[a-z0-9]+)/$',
                 login_required(self.alert_cancel_view.as_view()),
                 name='alerts-cancel-by-pk'),
 
             # Notifications
             # Redirect to notification inbox
-            url(r'^notifications/$', generic.RedirectView.as_view(
+            path('notifications/', generic.RedirectView.as_view(
                 url='/accounts/notifications/inbox/', permanent=False)),
-            url(r'^notifications/inbox/$',
+            path('notifications/inbox/',
                 login_required(self.notification_inbox_view.as_view()),
                 name='notifications-inbox'),
-            url(r'^notifications/archive/$',
+            path('notifications/archive/',
                 login_required(self.notification_archive_view.as_view()),
                 name='notifications-archive'),
-            url(r'^notifications/update/$',
+            path('notifications/update/',
                 login_required(self.notification_update_view.as_view()),
                 name='notifications-update'),
-            url(r'^notifications/(?P<pk>\d+)/$',
+            path('notifications/<int:pk>/',
                 login_required(self.notification_detail_view.as_view()),
                 name='notifications-detail'),
         ]

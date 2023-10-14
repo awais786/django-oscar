@@ -4,7 +4,6 @@ from decimal import Decimal as D
 import pytest
 from django.core import exceptions
 from django.test import TestCase
-from django.utils.timezone import utc
 from django.utils.translation import gettext_lazy as _
 
 from oscar.apps.voucher.models import Voucher
@@ -14,8 +13,8 @@ from oscar.test.factories import (
     ConditionFactory, OrderFactory, RangeFactory, UserFactory, VoucherFactory,
     VoucherSetFactory, create_basket, create_offer, create_product)
 
-START_DATETIME = datetime.datetime(2011, 1, 1).replace(tzinfo=utc)
-END_DATETIME = datetime.datetime(2012, 1, 1).replace(tzinfo=utc)
+START_DATETIME = datetime.datetime(2011, 1, 1).replace(tzinfo=datetime.timezone.utc)
+END_DATETIME = datetime.datetime(2012, 1, 1).replace(tzinfo=datetime.timezone.utc)
 User = get_user_model()
 ConditionalOffer = get_model('offer', 'ConditionalOffer')
 
@@ -43,7 +42,7 @@ class TestAVoucher(TestCase):
             start_datetime=START_DATETIME, end_datetime=END_DATETIME)
 
     def test_is_active_between_start_and_end_dates(self):
-        test = datetime.datetime(2011, 6, 10).replace(tzinfo=utc)
+        test = datetime.datetime(2011, 6, 10).replace(tzinfo=datetime.timezone.utc)
         self.assertTrue(self.voucher.is_active(test))
 
     def test_is_active_on_end_date(self):
@@ -53,7 +52,7 @@ class TestAVoucher(TestCase):
         self.assertTrue(self.voucher.is_active(START_DATETIME))
 
     def test_is_inactive_outside_of_start_and_end_dates(self):
-        test = datetime.datetime(2012, 3, 10).replace(tzinfo=utc)
+        test = datetime.datetime(2012, 3, 10).replace(tzinfo=datetime.timezone.utc)
         self.assertFalse(self.voucher.is_active(test))
 
     def test_increments_total_discount_when_recording_usage(self):

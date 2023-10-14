@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path, re_path
 from django.utils.translation import gettext_lazy as _
 
 from oscar.core.application import OscarDashboardConfig
@@ -26,21 +26,21 @@ class UsersDashboardConfig(OscarDashboardConfig):
 
     def get_urls(self):
         urls = [
-            url(r'^$', self.index_view.as_view(), name='users-index'),
-            url(r'^(?P<pk>-?\d+)/$',
+            path('', self.index_view.as_view(), name='users-index'),
+            re_path(r'^(?P<pk>-?\d+)/$',
                 self.user_detail_view.as_view(), name='user-detail'),
-            url(r'^(?P<pk>-?\d+)/password-reset/$',
+            re_path(r'^(?P<pk>-?\d+)/password-reset/$',
                 self.password_reset_view.as_view(),
                 name='user-password-reset'),
 
             # Alerts
-            url(r'^alerts/$',
+            path('alerts/',
                 self.alert_list_view.as_view(),
                 name='user-alert-list'),
-            url(r'^alerts/(?P<pk>-?\d+)/delete/$',
+            re_path(r'^alerts/(?P<pk>-?\d+)/delete/$',
                 self.alert_delete_view.as_view(),
                 name='user-alert-delete'),
-            url(r'^alerts/(?P<pk>-?\d+)/update/$',
+            re_path(r'^alerts/(?P<pk>-?\d+)/update/$',
                 self.alert_update_view.as_view(),
                 name='user-alert-update'),
         ]
