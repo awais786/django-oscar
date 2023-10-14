@@ -1,5 +1,7 @@
 import csv
+import re
 
+from django import template
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
@@ -20,7 +22,7 @@ try:
     # Django 3.0 and above
     from django.utils.http import url_has_allowed_host_and_scheme       # noqa F401
 except ImportError:
-    from django.utils.http import is_safe_url as url_has_allowed_host_and_scheme    # noqa F401
+    from django.utils.http import url_has_allowed_host_and_scheme as url_has_allowed_host_and_scheme    # noqa F401
 
 
 def get_user_model():
@@ -127,3 +129,19 @@ class UnicodeCSVWriter:
     def writerows(self, rows):
         for row in rows:
             self.writerow(row)
+
+
+class FormFieldNode(template.Node):
+    """"
+    Add the widget type to a BoundField. Until 3.1, Django did not make this available by default.
+
+    Used by `oscar.templatetags.form_tags.annotate_form_field`
+    """
+    def __init__(self, field_str):
+        self.field = template.Variable(field_str)
+
+    def render(self, context):
+        field = self.field.resolve(context)
+        if not hasattr(field, 'widget_type') and hasattr(field, 'field'):
+            field.widget_type = re.sub(r'widget$|input$', '', field.field.widget.__class__.__name__.lower())
+        return ''

@@ -140,7 +140,7 @@ def safe_referrer(request, default):
     The default URL can be a model with get_absolute_url defined, a urlname
     or a regular URL
     """
-    referrer = request.META.get('HTTP_REFERER')
+    referrer = request.headers.get('referer')
     if referrer and url_has_allowed_host_and_scheme(referrer, request.get_host()):
         return referrer
     if default:

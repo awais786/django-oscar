@@ -2,7 +2,7 @@ from unittest import mock
 
 import pytest
 from django.apps import AppConfig
-from django.conf.urls import include, url
+from django.urls import include, path, re_path
 from django.core.exceptions import ImproperlyConfigured
 
 from oscar.apps.dashboard.nav import _dashboard_url_names_to_config
@@ -18,10 +18,10 @@ class DashConfig(OscarDashboardConfig):
 
     def get_urls(self):
         return [
-            url('a', lambda x:x, name='lol'),
-            url('b', lambda x:x),
-            url('c', include([
-                url('d', lambda x:x, name='foo'),
+            re_path('a', lambda x:x, name='lol'),
+            re_path('b', lambda x:x),
+            path('c', include([
+                re_path('d', lambda x:x, name='foo'),
             ]))
         ]
 
