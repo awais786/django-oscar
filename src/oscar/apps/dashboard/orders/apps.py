@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path, re_path
 from django.utils.translation import gettext_lazy as _
 
 from oscar.core.application import OscarDashboardConfig
@@ -30,16 +30,16 @@ class OrdersDashboardConfig(OscarDashboardConfig):
 
     def get_urls(self):
         urls = [
-            url(r'^$', self.order_list_view.as_view(), name='order-list'),
-            url(r'^statistics/$', self.order_stats_view.as_view(),
+            path('', self.order_list_view.as_view(), name='order-list'),
+            path('statistics/', self.order_stats_view.as_view(),
                 name='order-stats'),
-            url(r'^(?P<number>[-\w]+)/$',
+            re_path(r'^(?P<number>[-\w]+)/$',
                 self.order_detail_view.as_view(), name='order-detail'),
-            url(r'^(?P<number>[-\w]+)/notes/(?P<note_id>\d+)/$',
+            re_path(r'^(?P<number>[-\w]+)/notes/(?P<note_id>\d+)/$',
                 self.order_detail_view.as_view(), name='order-detail-note'),
-            url(r'^(?P<number>[-\w]+)/lines/(?P<line_id>\d+)/$',
+            re_path(r'^(?P<number>[-\w]+)/lines/(?P<line_id>\d+)/$',
                 self.line_detail_view.as_view(), name='order-line-detail'),
-            url(r'^(?P<number>[-\w]+)/shipping-address/$',
+            re_path(r'^(?P<number>[-\w]+)/shipping-address/$',
                 self.shipping_address_view.as_view(),
                 name='order-shipping-address'),
         ]

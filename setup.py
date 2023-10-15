@@ -18,9 +18,9 @@ sys.path.append(os.path.join(PROJECT_DIR, 'src'))
 from oscar import get_version  # noqa isort:skip
 
 install_requires = [
-    'django>=2.2,<3.1',
+    'django>=2.2,<3.3',
     # PIL is required for image fields, Pillow is the "friendly" PIL fork
-    'pillow>=6.0',
+    'pillow>=6.0,<10.0',
     # We use the ModelFormSetView from django-extra-views for the basket page
     'django-extra-views>=0.13,<0.14',
     # Search support
@@ -33,18 +33,18 @@ install_requires = [
     'purl>=0.7',
     # For phone number field
     'phonenumbers',
-    'django-phonenumber-field>=3.0.0,<4.0.0',
+    'django-phonenumber-field>=4.0.0,<7.0.0',
     # Used for oscar.test.newfactories
     'factory-boy>=2.4.1,<3.0',
     # Used for automatically building larger HTML tables
-    'django-tables2>=2.2,<2.3',
+    'django-tables2>=2.4,<2.5',
     # Used for manipulating form field attributes in templates (eg: add
     # a css class)
     'django-widget-tweaks>=1.4.1',
 ]
 
-sorl_thumbnail_version = 'sorl-thumbnail>=12.6,<12.7'
-easy_thumbnails_version = 'easy-thumbnails>=2.7,<2.8'
+sorl_thumbnail_version = 'sorl-thumbnail>=12.9,<12.10'
+easy_thumbnails_version = 'easy-thumbnails>=2.7,<2.8.6'
 
 docs_requires = [
     'Sphinx==2.2.2',
@@ -61,8 +61,8 @@ test_requires = [
     'coverage>=5.0,<5.1',
     'django-webtest>=1.9,<1.10',
     'psycopg2-binary>=2.8,<2.9',
-    'pytest-django>=3.7,<3.8',
-    'pytest-xdist>=1.31,<1.32',
+    'pytest-django>=3.7,<4.5.2',
+    'pytest-xdist>=1.31,<3.3.1',
     'tox>=3.14,<3.15',
     'freezegun>=0.3,<0.4',
     sorl_thumbnail_version,
@@ -99,15 +99,15 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Django',
         'Framework :: Django :: 2.2',
-        'Framework :: Django :: 3.0',
+        'Framework :: Django :: 3.1',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: Unix',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Topic :: Software Development :: Libraries :: Application Frameworks']
 )
 

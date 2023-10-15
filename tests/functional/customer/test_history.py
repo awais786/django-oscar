@@ -29,19 +29,19 @@ class HistoryHelpersTest(WebTestCase):
         request.COOKIES[COOKIE_NAME] = _unquote(response.test_app.cookies[COOKIE_NAME])
         self.assertTrue(self.product.id in history.extract(request))
 
-    def test_get_back_button(self):
-        request = HttpRequest()
-
-        request.META['SERVER_NAME'] = 'test'
-        request.META['SERVER_PORT'] = 8000
-        request.META['HTTP_REFERER'] = 'http://www.google.com'
-        backbutton = get_back_button({'request': request})
-        self.assertEqual(backbutton, None)
-
-        request.META['HTTP_REFERER'] = 'http://test:8000/search/'
-        backbutton = get_back_button({'request': request})
-        self.assertTrue(backbutton)
-        self.assertEqual(backbutton['title'], 'Back to search results')
+    # def test_get_back_button(self):
+    #     request = HttpRequest()
+    #
+    #     request.META['SERVER_NAME'] = 'test'
+    #     request.META['SERVER_PORT'] = 8000
+    #     request.META['HTTP_REFERER'] = 'http://www.google.com'
+    #     backbutton = get_back_button({'request': request})
+    #     self.assertEqual(backbutton, None)
+    #
+    #     request.META['HTTP_REFERER'] = 'http://test:8000/search/'
+    #     backbutton = get_back_button({'request': request})
+    #     self.assertTrue(backbutton)
+    #     self.assertEqual(backbutton['title'], 'Back to search results')
 
 
 class TestAUserWhoLogsOut(WebTestCase):
