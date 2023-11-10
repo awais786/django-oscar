@@ -8,7 +8,11 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 def forward(apps, schema_editor):
     LineAttribute = apps.get_model("basket", "LineAttribute")
-    for at in LineAttribute.objects.all():
+
+    batch_size = 100  # Set your desired batch size
+    update_batch = []
+
+    for at in LineAttribute.objects.all().iterator():
         try:  # if the value is allready valid json, continue
             json.loads(at.value)
             continue
@@ -18,15 +22,23 @@ def forward(apps, schema_editor):
         try:  # to parse the string a python, then convert to json, then continue
             val = literal_eval(at.value)
             at.value = json.dumps(val, cls=DjangoJSONEncoder)
-            at.save()
+            update_batch.append(at)
+        continue
             continue
         except (ValueError, SyntaxError):
             pass
 
         # convert the string to json as it is
         at.value = json.dumps(at.value)
-        at.save()
-
+     
+        # Perform a bulk update when the batch size reaches the limit
+        if len(update_batch) >= batch_size:
+            LineAttribute.objects.bulk_update(update_batch, ['value'])
+            update_batch = []
+    
+    # Perform a final bulk update for any remaining records in the batch
+    if update_batch:
+        LineAttribute.objects.bulk_update(update_batch, ['value'])
 
 class Migration(migrations.Migration):
 
