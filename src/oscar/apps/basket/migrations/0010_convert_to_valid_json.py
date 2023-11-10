@@ -23,7 +23,6 @@ def forward(apps, schema_editor):
             val = literal_eval(at.value)
             at.value = json.dumps(val, cls=DjangoJSONEncoder)
             update_batch.append(at)
-        continue
             continue
         except (ValueError, SyntaxError):
             pass
