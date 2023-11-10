@@ -9,7 +9,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 def forward(apps, schema_editor):
     LineAttribute = apps.get_model("basket", "LineAttribute")
 
-    batch_size = 100  # Set your desired batch size
+    batch_size = 1000  # Set your desired batch size
     update_batch = []
 
     for at in LineAttribute.objects.all().iterator():
